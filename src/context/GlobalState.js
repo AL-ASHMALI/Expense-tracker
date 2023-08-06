@@ -11,7 +11,6 @@ const initialState = {
     { id: 5, text: "Eat out", amount: -40 },
   ],
 };
-
 //create global context using createContext
 export const GlobalContext = createContext(initialState);
 
@@ -27,11 +26,19 @@ export const GlobalProvider = ({ children }) => {
     });
   }
 
+  function addTransaction(transaction) {
+    dispatch({
+      type: "ADD_TRANSACTION",
+      payload: transaction,
+    });
+  }
+
   return (
     <GlobalContext.Provider
       value={{
         transactions: state.transactions,
         deleteTransaction,
+        addTransaction,
       }}
     >
       {/* this allows to access the transactions in the initialState*/}
