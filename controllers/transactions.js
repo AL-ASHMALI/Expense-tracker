@@ -1,16 +1,33 @@
+const Transaction = require("../models/Transaction"); // This allows us to use mongodb commands such as find, delete or update
+
 // @description:  Get all transactions
 // @route:   Get /api/v1/transactions
 // @access public
 
-exports.getTransactions = (req, res, next) => {
-  res.send("Get transactions");
+exports.getTransactions = async (req, res, next) => {
+  try {
+    const transactions = await Transaction.find(); // Get all transactions
+    return res.status(200).json({
+      success: true,
+      count: transactions.length,
+      data: transactions,
+    });
+  } catch (error) {
+    return (
+      res,
+      send(500).json({
+        success: false,
+        error: "Server error",
+      })
+    );
+  }
 };
 
 // @description:  Add a transaction
 // @route:   POST /api/v1/transactions
 // @access public
 
-exports.addTransaction = (req, res, next) => {
+exports.addTransaction = async (req, res, next) => {
   res.send("POST transactions");
 };
 
@@ -18,6 +35,6 @@ exports.addTransaction = (req, res, next) => {
 // @route:   Get /api/v1/transactions/:id
 // @access public
 
-exports.deleteTransaction = (req, res, next) => {
+exports.deleteTransaction = async (req, res, next) => {
   res.send("Delete transactions");
 };
