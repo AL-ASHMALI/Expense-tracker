@@ -14,6 +14,10 @@ const app = express();
 
 app.use(express.json()); // this allows to use the body parser
 
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev")); // this shows a log of requests in the console.
+}
+
 app.use("/api/v1/transactions", transactions); // this connects to the transactions inside the router folder
 
 const PORT = process.env.PORT || 5000;
