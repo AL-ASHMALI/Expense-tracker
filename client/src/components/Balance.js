@@ -5,9 +5,14 @@ const Balance = () => {
   const { transactions } = useContext(GlobalContext);
 
   const amount = transactions.map((transaction) => transaction.amount);
-  const total = Number(amount.reduce((acc, item) => (acc += item), 0)).toFixed(
-    2
-  );
+
+  // Filter out non-numeric values
+  const numericAmounts = amount.filter((item) => typeof item === "number");
+
+  // Calculate total if there are numeric values
+  const total = numericAmounts
+    .reduce((acc, item) => (acc += item), 0)
+    .toFixed(2);
 
   return (
     <>
