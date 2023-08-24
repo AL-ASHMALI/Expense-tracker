@@ -1,4 +1,4 @@
-import React, { createContext, useReducer } from "react";
+import { React, createContext, useReducer } from "react";
 import AppReducer from "./AppReducer";
 import axios from "axios";
 
@@ -48,11 +48,26 @@ export const GlobalProvider = ({ children }) => {
     }
   }
 
-  function addTransaction(transaction) {
-    dispatch({
-      type: "ADD_TRANSACTION",
-      payload: transaction,
-    });
+  async function addTransaction(transaction) {
+    const config = {
+      headers: {
+        "Content-Type": "application/json", // setup the content type to be JSON format
+      },
+    };
+    try {
+      const res = await axios.post("/api/v1/transactions", transaction, config);
+
+      dispatch({
+        type: "ADD_TRANSACTION",
+        payload: res.data.data,
+      });
+    } catch (error) {
+      console.log(error);
+      dispatch({
+        type: "TRANSACTION_ERROR",
+        payload: error.response.data.error,
+      });
+    }
   }
 
   return (
